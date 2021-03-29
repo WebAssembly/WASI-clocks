@@ -7,29 +7,54 @@
 
 (use "typenames.witx")
 
+;;; A handle providing a clock source.
+(typename $clock (handle))
+
 (module $wasi_ephemeral_clock
   ;;; Linear memory to be accessed by WASI functions that need it.
   (import "memory" (memory))
 
+  ;;; A clock providing [POSIX time].
+  ;;;
+  ;;; TODO: Convert this from a `func` to an immutable global, pending
+  ;;; resolution of https://github.com/WebAssembly/WASI/issues/419
+  ;;;
+  ;;; [POSIX time]: https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xbd_chap04.html#tag_21_04_16
+  (@interface func (export "posix") (result $clock $clock))
+
+  ;;; A clock where each successive timestamp is guaranteed to be at least as
+  ;;; great as the previous.
+  ;;;
+  ;;; This clock starts at a nondeterministic time.
+  ;;;
+  ;;; This clock should reflect wall-clock elapsed time, except that it may
+  ;;; nondeterministically suspend when the program itself is is suspended.
+  ;;;
+  ;;; TODO: Convert this from a `func` to an immutable global, pending
+  ;;; resolution of https://github.com/WebAssembly/WASI/issues/419
+  (@interface func (export "monotonic") (result $clock $clock))
+
   ;;; Return the resolution of a clock.
-  ;;; Implementations are required to provide a non-zero value for supported clocks. For unsupported clocks,
-  ;;; return `errno::inval`.
-  ;;; Note: This is similar to `clock_getres` in POSIX.
-  (@interface func (export "res_get")
+  ;;;
+  ;;; The resolution of a clock is a constant non-zero value which reflects the
+  ;;; difference between successive distinct timestamp values from the clock.
+  (@interface func (export "resolution")
     ;;; The clock for which to return the resolution.
-    (param $id $clockid)
+    (param $clock $clock)
     ;;; The resolution of the clock.
-    (result $error (expected $timestamp (error $errno)))
+    (result $resolution $timestamp)
   )
 
-  ;;; Return the time value of a clock.
-  ;;; Note: This is similar to `clock_gettime` in POSIX.
-  (@interface func (export "time_get")
+  ;;; Return the current time value of a clock.
+  (@interface func (export "time")
     ;;; The clock for which to return the time.
-    (param $id $clockid)
-    ;;; The maximum lag (exclusive) that the returned time value may have, compared to its actual value.
+    (param $clock $clock)
+    ;;; The desired precision. A value of zero requests the greatest precision
+    ;;; available. A non-zero value indicates that the requested time may be
+    ;;; less precise as long as dividing it by that value produces the same
+    ;;; result as it would with the greatest-precision result.
     (param $precision $timestamp)
     ;;; The time value of the clock.
-    (result $error (expected $timestamp (error $errno)))
+    (result $time $timestamp)
   )
 )
