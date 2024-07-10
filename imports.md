@@ -171,11 +171,11 @@ configured time zone.</p>
 <h5>Record Fields</h5>
 <ul>
 <li>
-<p><a name="timezone_display.utc_offset"></a><a href="#utc_offset"><code>utc-offset</code></a>: <code>s32</code></p>
-<p>The number of seconds difference between UTC time and the local
+<p><a name="timezone_display.utc_offset"></a><a href="#utc_offset"><code>utc-offset</code></a>: <code>s64</code></p>
+<p>The number of nanoseconds difference between UTC time and the local
 time of the timezone.
-<p>The returned value will always be less than 86400 which is the
-number of seconds in a day (24<em>60</em>60).</p>
+<p>The returned value will always be less than 86,400,000,000,000 which
+is the number of nanoseconds in a day (24<em>60</em>60*1e9).</p>
 <p>In implementations that do not expose an actual time zone, this
 should return 0.</p>
 </li>
@@ -216,5 +216,5 @@ time zone name.</p>
 </ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="utc_offset.0"></a> <code>s32</code></li>
+<li><a name="utc_offset.0"></a> <code>s64</code></li>
 </ul>

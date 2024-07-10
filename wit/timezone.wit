@@ -16,21 +16,21 @@ interface timezone {
 
     /// The same as `display`, but only return the UTC offset.
     @unstable(feature = clocks-timezone)
-    utc-offset: func(when: instant) -> s32;
+    utc-offset: func(when: instant) -> s64;
 
     /// Information useful for displaying a specific `instant` in the currently
     /// configured time zone.
     @unstable(feature = clocks-timezone)
     record timezone-display {
-        /// The number of seconds difference between UTC time and the local
+        /// The number of nanoseconds difference between UTC time and the local
         /// time of the timezone.
         ///
-        /// The returned value will always be less than 86400 which is the
-        /// number of seconds in a day (24*60*60).
+        /// The returned value will always be less than 86,400,000,000,000 which
+        /// is the number of nanoseconds in a day (24*60*60*1e9).
         ///
         /// In implementations that do not expose an actual time zone, this
         /// should return 0.
-        utc-offset: s32,
+        utc-offset: s64,
 
         /// The IANA identifier of the timezone. The id `UTC` indicates
         /// Coordinated Universal Time. Otherwise, this should be an identifier
