@@ -3,7 +3,7 @@ package wasi:clocks@0.2.0;
 @unstable(feature = clocks-timezone)
 interface timezone {
     @unstable(feature = clocks-timezone)
-    use wall-clock.{datetime};
+    use system-clock.{datetime};
 
     /// Return information needed to display the given `datetime`. This includes
     /// the UTC offset, the time zone name, and a flag indicating whether

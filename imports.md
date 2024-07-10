@@ -4,7 +4,7 @@
 <ul>
 <li>interface <a href="#wasi_io_poll_0_2_0"><code>wasi:io/poll@0.2.0</code></a></li>
 <li>interface <a href="#wasi_clocks_monotonic_clock_0_2_0"><code>wasi:clocks/monotonic-clock@0.2.0</code></a></li>
-<li>interface <a href="#wasi_clocks_wall_clock_0_2_0"><code>wasi:clocks/wall-clock@0.2.0</code></a></li>
+<li>interface <a href="#wasi_clocks_system_clock_0_2_0"><code>wasi:clocks/system-clock@0.2.0</code></a></li>
 <li>interface <a href="#wasi_clocks_timezone_0_2_0"><code>wasi:clocks/timezone@0.2.0</code></a></li>
 </ul>
 </li>
@@ -118,10 +118,9 @@ elapsed from the time this function is invoked.</p>
 <ul>
 <li><a name="subscribe_duration.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi_clocks_wall_clock_0_2_0"></a>Import interface wasi:clocks/wall-clock@0.2.0</h2>
-<p>WASI Wall Clock is a clock API intended to let users query the current
-time. The name &quot;wall&quot; makes an analogy to a &quot;clock on the wall&quot;, which
-is not necessarily monotonic as it may be reset.</p>
+<h2><a name="wasi_clocks_system_clock_0_2_0"></a>Import interface wasi:clocks/system-clock@0.2.0</h2>
+<p>WASI System Clock is a clock API intended to let users query the current
+time. The clock is not necessarily monotonic as it may be reset.</p>
 <p>It is intended to be portable at least between Unix-family platforms and
 Windows.</p>
 <p>A wall clock is a clock which measures the date and time according to
