@@ -88,9 +88,9 @@ default-monotonic-clock: monotonic-clock
 #### Retrieving the timezone:
 
 ```rust
-    let datetime: Datetime = system_clock::now();
+    let instant: Instant = system_clock::now();
 
-    let timezone_display: TimezoneDisplay = timezone::display(datetime);
+    let timezone_display: TimezoneDisplay = timezone::display(instant);
 
     println!("the timezone is {}", timezone_display.name);
 ```

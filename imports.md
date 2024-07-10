@@ -123,19 +123,20 @@ elapsed from the time this function is invoked.</p>
 time. The clock is not necessarily monotonic as it may be reset.</p>
 <p>It is intended to be portable at least between Unix-family platforms and
 Windows.</p>
-<p>A wall clock is a clock which measures the date and time according to
-some external reference.</p>
+<p>An &quot;instant&quot;, or &quot;exact time&quot;, is a point in time without regard to any time
+zone: just the time since a particular external reference point, often
+called an &quot;epoch&quot;.</p>
 <p>External references may be reset, so this clock is not necessarily
 monotonic, making it unsuitable for measuring elapsed time.</p>
 <p>It is intended for reporting the current date and time for humans.</p>
 <hr />
 <h3>Types</h3>
-<h4><a name="datetime"></a><code>record datetime</code></h4>
-<p>A time and date in seconds plus nanoseconds.</p>
+<h4><a name="instant"></a><code>record instant</code></h4>
+<p>An exact time in seconds plus nanoseconds.</p>
 <h5>Record Fields</h5>
 <ul>
-<li><a name="datetime.seconds"></a><code>seconds</code>: <code>u64</code></li>
-<li><a name="datetime.nanoseconds"></a><code>nanoseconds</code>: <code>u32</code></li>
+<li><a name="instant.seconds"></a><code>seconds</code>: <code>u64</code></li>
+<li><a name="instant.nanoseconds"></a><code>nanoseconds</code>: <code>u32</code></li>
 </ul>
 <hr />
 <h3>Functions</h3>
@@ -149,23 +150,24 @@ also known as <a href="https://en.wikipedia.org/wiki/Unix_time">Unix Time</a>.</
 <p>The nanoseconds field of the output is always less than 1000000000.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="now.0"></a> <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="now.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h4><a name="resolution"></a><code>resolution: func</code></h4>
 <p>Query the resolution of the clock.</p>
 <p>The nanoseconds field of the output is always less than 1000000000.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="resolution.0"></a> <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="resolution.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h2><a name="wasi_clocks_timezone_0_2_0"></a>Import interface wasi:clocks/timezone@0.2.0</h2>
 <hr />
 <h3>Types</h3>
-<h4><a name="datetime"></a><code>type datetime</code></h4>
-<p><a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></p>
+<h4><a name="instant"></a><code>type instant</code></h4>
+<p><a href="#instant"><a href="#instant"><code>instant</code></a></a></p>
 <p>
 #### <a name="timezone_display"></a>`record timezone-display`
-<p>Information useful for displaying the timezone of a specific <a href="#datetime"><code>datetime</code></a>.</p>
+<p>Information useful for displaying a specific <a href="#instant"><code>instant</code></a> in the currently
+configured time zone.</p>
 <p>This information may vary within a single <code>timezone</code> to reflect daylight
 saving time adjustments.</p>
 <h5>Record Fields</h5>
@@ -199,15 +201,15 @@ should return false.</p>
 <hr />
 <h3>Functions</h3>
 <h4><a name="display"></a><code>display: func</code></h4>
-<p>Return information needed to display the given <a href="#datetime"><code>datetime</code></a>. This includes
-the UTC offset, the time zone name, and a flag indicating whether
-daylight saving time is active.</p>
-<p>If the timezone cannot be determined for the given <a href="#datetime"><code>datetime</code></a>, return a
+<p>Return information needed to display the given <a href="#instant"><code>instant</code></a> in the
+currently configured time zone. This includes the UTC offset, the time
+zone name, and a flag indicating whether daylight saving time is active.</p>
+<p>If the currently configured timezone cannot be determined, return a
 <a href="#timezone_display"><code>timezone-display</code></a> for <code>UTC</code> with a <a href="#utc_offset"><code>utc-offset</code></a> of 0 and no daylight
 saving time.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="display.when"></a><code>when</code>: <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="display.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h5>Return values</h5>
 <ul>
@@ -217,7 +219,7 @@ saving time.</p>
 <p>The same as <a href="#display"><code>display</code></a>, but only return the UTC offset.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="utc_offset.when"></a><code>when</code>: <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="utc_offset.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h5>Return values</h5>
 <ul>
