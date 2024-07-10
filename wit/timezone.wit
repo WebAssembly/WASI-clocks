@@ -6,12 +6,11 @@ interface timezone {
     use system-clock.{instant};
 
     /// Return information needed to display the given `instant` in the
-    /// currently configured time zone. This includes the UTC offset, the time
-    /// zone name, and a flag indicating whether daylight saving time is active.
+    /// currently configured time zone. This includes the UTC offset and the
+    /// time zone name.
     ///
     /// If the currently configured timezone cannot be determined, return a
-    /// `timezone-display` for `UTC` with a `utc-offset` of 0 and no daylight
-    /// saving time.
+    /// `timezone-display` for `UTC` with a `utc-offset` of 0.
     @unstable(feature = clocks-timezone)
     display: func(when: instant) -> timezone-display;
 
@@ -21,9 +20,6 @@ interface timezone {
 
     /// Information useful for displaying a specific `instant` in the currently
     /// configured time zone.
-    ///
-    /// This information may vary within a single `timezone` to reflect daylight
-    /// saving time adjustments.
     @unstable(feature = clocks-timezone)
     record timezone-display {
         /// The number of seconds difference between UTC time and the local
@@ -46,11 +42,5 @@ interface timezone {
         /// In time zones that do not have an applicable name, a formatted
         /// representation of the UTC offset may be returned, such as `-04:00`.
         name: string,
-
-        /// Whether daylight saving time is active.
-        ///
-        /// In implementations that do not expose an actual time zone, this
-        /// should return false.
-        in-daylight-saving-time: bool,
     }
 }

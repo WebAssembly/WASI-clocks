@@ -168,8 +168,6 @@ also known as <a href="https://en.wikipedia.org/wiki/Unix_time">Unix Time</a>.</
 #### <a name="timezone_display"></a>`record timezone-display`
 <p>Information useful for displaying a specific <a href="#instant"><code>instant</code></a> in the currently
 configured time zone.</p>
-<p>This information may vary within a single <code>timezone</code> to reflect daylight
-saving time adjustments.</p>
 <h5>Record Fields</h5>
 <ul>
 <li>
@@ -191,22 +189,15 @@ should be the string <code>UTC</code>.</p>
 <p>In time zones that do not have an applicable name, a formatted
 representation of the UTC offset may be returned, such as <code>-04:00</code>.</p>
 </li>
-<li>
-<p><a name="timezone_display.in_daylight_saving_time"></a><code>in-daylight-saving-time</code>: <code>bool</code></p>
-<p>Whether daylight saving time is active.
-<p>In implementations that do not expose an actual time zone, this
-should return false.</p>
-</li>
 </ul>
 <hr />
 <h3>Functions</h3>
 <h4><a name="display"></a><code>display: func</code></h4>
 <p>Return information needed to display the given <a href="#instant"><code>instant</code></a> in the
-currently configured time zone. This includes the UTC offset, the time
-zone name, and a flag indicating whether daylight saving time is active.</p>
+currently configured time zone. This includes the UTC offset and the
+time zone name.</p>
 <p>If the currently configured timezone cannot be determined, return a
-<a href="#timezone_display"><code>timezone-display</code></a> for <code>UTC</code> with a <a href="#utc_offset"><code>utc-offset</code></a> of 0 and no daylight
-saving time.</p>
+<a href="#timezone_display"><code>timezone-display</code></a> for <code>UTC</code> with a <a href="#utc_offset"><code>utc-offset</code></a> of 0.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="display.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
