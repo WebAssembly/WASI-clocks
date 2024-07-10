@@ -66,13 +66,14 @@ default-monotonic-clock: monotonic-clock
 ```
 
 ```rust
-   let start: Instant = monotonic_clock::now(clock);
+   let start: MonotonicClockPoint = monotonic_clock::now(clock);
 
    // some stuff
 
-   let stop: Instant = monotonic_clock::now(clock);
+   let stop: MonotonicClockPoint = monotonic_clock::now(clock);
 
-   let elapsed: Instant = stop - start;
+   let elapsed: MonotonicClockPoint = stop - start;
+   // NOTE: should be `elapsed: Duration`?
 ```
 
 

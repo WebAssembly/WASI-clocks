@@ -71,9 +71,9 @@ successive reads of the clock will produce non-decreasing values.</p>
 <h4><a name="pollable"></a><code>type pollable</code></h4>
 <p><a href="#pollable"><a href="#pollable"><code>pollable</code></a></a></p>
 <p>
-#### <a name="instant"></a>`type instant`
+#### <a name="monotonic_clock_point"></a>`type monotonic-clock-point`
 `u64`
-<p>An instant in time, in nanoseconds. An instant is relative to an
+<p>A monotonic clock point in nanoseconds. A clock point is relative to an
 unspecified initial value, and can only be compared to instances from
 the same monotonic-clock.
 <h4><a name="duration"></a><code>type duration</code></h4>
@@ -87,7 +87,7 @@ the same monotonic-clock.
 produce a sequence of non-decreasing values.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="now.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
+<li><a name="now.0"></a> <a href="#monotonic_clock_point"><a href="#monotonic_clock_point"><code>monotonic-clock-point</code></a></a></li>
 </ul>
 <h4><a name="resolution"></a><code>resolution: func</code></h4>
 <p>Query the resolution of the clock. Returns the duration of time
@@ -96,16 +96,16 @@ corresponding to a clock tick.</p>
 <ul>
 <li><a name="resolution.0"></a> <a href="#duration"><a href="#duration"><code>duration</code></a></a></li>
 </ul>
-<h4><a name="subscribe_instant"></a><code>subscribe-instant: func</code></h4>
-<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the specified instant
+<h4><a name="subscribe_clock_point"></a><code>subscribe-clock-point: func</code></h4>
+<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the specified clock point
 has occured.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="subscribe_instant.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
+<li><a name="subscribe_clock_point.when"></a><code>when</code>: <a href="#monotonic_clock_point"><a href="#monotonic_clock_point"><code>monotonic-clock-point</code></a></a></li>
 </ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="subscribe_instant.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
+<li><a name="subscribe_clock_point.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
 </ul>
 <h4><a name="subscribe_duration"></a><code>subscribe-duration: func</code></h4>
 <p>Create a <a href="#pollable"><code>pollable</code></a> that will resolve after the specified duration has
