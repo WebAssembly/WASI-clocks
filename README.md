@@ -92,7 +92,7 @@ default-monotonic-clock: monotonic-clock
 
     let timezone_display: TimezoneDisplay = timezone::display(instant);
 
-    println!("the timezone is {}", timezone_display.name);
+    println!("the timezone is {}", timezone_display.id);
 ```
 
 ### Detailed design discussion

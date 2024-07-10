@@ -32,15 +32,18 @@ interface timezone {
         /// should return 0.
         utc-offset: s32,
 
-        /// The abbreviated name of the timezone to display to a user. The name
-        /// `UTC` indicates Coordinated Universal Time. Otherwise, this should
-        /// reference local standards for the name of the time zone.
+        /// The IANA identifier of the timezone. The id `UTC` indicates
+        /// Coordinated Universal Time. Otherwise, this should be an identifier
+        /// from the IANA Time Zone Database.
+        ///
+        /// For displaying to a user, the identifier should be converted into a
+        /// localized name by means of an internationalization API.
         ///
         /// In implementations that do not expose an actual time zone, this
         /// should be the string `UTC`.
         ///
         /// In time zones that do not have an applicable name, a formatted
         /// representation of the UTC offset may be returned, such as `-04:00`.
-        name: string,
+        id: string,
     }
 }

@@ -180,10 +180,12 @@ number of seconds in a day (24<em>60</em>60).</p>
 should return 0.</p>
 </li>
 <li>
-<p><a name="timezone_display.name"></a><code>name</code>: <code>string</code></p>
-<p>The abbreviated name of the timezone to display to a user. The name
-`UTC` indicates Coordinated Universal Time. Otherwise, this should
-reference local standards for the name of the time zone.
+<p><a name="timezone_display.id"></a><code>id</code>: <code>string</code></p>
+<p>The IANA identifier of the timezone. The id `UTC` indicates
+Coordinated Universal Time. Otherwise, this should be an identifier
+from the IANA Time Zone Database.
+<p>For displaying to a user, the identifier should be converted into a
+localized name by means of an internationalization API.</p>
 <p>In implementations that do not expose an actual time zone, this
 should be the string <code>UTC</code>.</p>
 <p>In time zones that do not have an applicable name, a formatted
