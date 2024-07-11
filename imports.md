@@ -165,51 +165,31 @@ also known as <a href="https://en.wikipedia.org/wiki/Unix_time">Unix Time</a>.</
 <h4><a name="instant"></a><code>type instant</code></h4>
 <p><a href="#instant"><a href="#instant"><code>instant</code></a></a></p>
 <p>
-#### <a name="timezone_display"></a>`record timezone-display`
-<p>Information useful for displaying a specific <a href="#instant"><code>instant</code></a> in the currently
-configured time zone.</p>
-<h5>Record Fields</h5>
-<ul>
-<li>
-<p><a name="timezone_display.utc_offset"></a><a href="#utc_offset"><code>utc-offset</code></a>: <code>s64</code></p>
-<p>The number of nanoseconds difference between UTC time and the local
-time of the timezone.
-<p>The returned value will always be less than 86,400,000,000,000 which
-is the number of nanoseconds in a day (24<em>60</em>60*1e9).</p>
-<p>In implementations that do not expose an actual time zone, this
-should return 0.</p>
-</li>
-<li>
-<p><a name="timezone_display.id"></a><code>id</code>: <code>string</code></p>
-<p>The IANA identifier of the timezone. The id `UTC` indicates
-Coordinated Universal Time. Otherwise, this should be an identifier
-from the IANA Time Zone Database.
+----
+<h3>Functions</h3>
+<h4><a name="id"></a><code>id: func</code></h4>
+<p>Return the IANA identifier of the currently configured timezone. The id
+<code>UTC</code> indicates Coordinated Universal Time. Otherwise, this should be an
+identifier from the IANA Time Zone Database.</p>
 <p>For displaying to a user, the identifier should be converted into a
 localized name by means of an internationalization API.</p>
 <p>In implementations that do not expose an actual time zone, this
 should be the string <code>UTC</code>.</p>
 <p>In time zones that do not have an applicable name, a formatted
 representation of the UTC offset may be returned, such as <code>-04:00</code>.</p>
-</li>
-</ul>
-<hr />
-<h3>Functions</h3>
-<h4><a name="display"></a><code>display: func</code></h4>
-<p>Return information needed to display the given <a href="#instant"><code>instant</code></a> in the
-currently configured time zone. This includes the UTC offset and the
-time zone name.</p>
-<p>If the currently configured timezone cannot be determined, return a
-<a href="#timezone_display"><code>timezone-display</code></a> for <code>UTC</code> with a <a href="#utc_offset"><code>utc-offset</code></a> of 0.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="display.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
-</ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="display.0"></a> <a href="#timezone_display"><a href="#timezone_display"><code>timezone-display</code></a></a></li>
+<li><a name="id.0"></a> <code>string</code></li>
 </ul>
 <h4><a name="utc_offset"></a><code>utc-offset: func</code></h4>
-<p>The same as <a href="#display"><code>display</code></a>, but only return the UTC offset.</p>
+<p>The number of nanoseconds difference between UTC time and the local
+time of the currently configured timezone at the exact time of
+<a href="#instant"><code>instant</code></a>.</p>
+<p>The magnitude of the returned value will always be less than
+86,400,000,000,000 which is the number of nanoseconds in a day
+(24<em>60</em>60*1e9).</p>
+<p>In implementations that do not expose an actual time zone, this
+should return 0.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="utc_offset.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>

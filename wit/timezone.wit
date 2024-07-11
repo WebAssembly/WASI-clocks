@@ -5,45 +5,31 @@ interface timezone {
     @unstable(feature = clocks-timezone)
     use system-clock.{instant};
 
-    /// Return information needed to display the given `instant` in the
-    /// currently configured time zone. This includes the UTC offset and the
-    /// time zone name.
+    /// Return the IANA identifier of the currently configured timezone. The id
+    /// `UTC` indicates Coordinated Universal Time. Otherwise, this should be an
+    /// identifier from the IANA Time Zone Database.
     ///
-    /// If the currently configured timezone cannot be determined, return a
-    /// `timezone-display` for `UTC` with a `utc-offset` of 0.
+    /// For displaying to a user, the identifier should be converted into a
+    /// localized name by means of an internationalization API.
+    ///
+    /// In implementations that do not expose an actual time zone, this
+    /// should be the string `UTC`.
+    ///
+    /// In time zones that do not have an applicable name, a formatted
+    /// representation of the UTC offset may be returned, such as `-04:00`.
     @unstable(feature = clocks-timezone)
-    display: func(when: instant) -> timezone-display;
+    id: func() -> string;
 
-    /// The same as `display`, but only return the UTC offset.
+    /// The number of nanoseconds difference between UTC time and the local
+    /// time of the currently configured timezone at the exact time of
+    /// `instant`.
+    ///
+    /// The magnitude of the returned value will always be less than
+    /// 86,400,000,000,000 which is the number of nanoseconds in a day
+    /// (24*60*60*1e9).
+    ///
+    /// In implementations that do not expose an actual time zone, this
+    /// should return 0.
     @unstable(feature = clocks-timezone)
     utc-offset: func(when: instant) -> s64;
-
-    /// Information useful for displaying a specific `instant` in the currently
-    /// configured time zone.
-    @unstable(feature = clocks-timezone)
-    record timezone-display {
-        /// The number of nanoseconds difference between UTC time and the local
-        /// time of the timezone.
-        ///
-        /// The returned value will always be less than 86,400,000,000,000 which
-        /// is the number of nanoseconds in a day (24*60*60*1e9).
-        ///
-        /// In implementations that do not expose an actual time zone, this
-        /// should return 0.
-        utc-offset: s64,
-
-        /// The IANA identifier of the timezone. The id `UTC` indicates
-        /// Coordinated Universal Time. Otherwise, this should be an identifier
-        /// from the IANA Time Zone Database.
-        ///
-        /// For displaying to a user, the identifier should be converted into a
-        /// localized name by means of an internationalization API.
-        ///
-        /// In implementations that do not expose an actual time zone, this
-        /// should be the string `UTC`.
-        ///
-        /// In time zones that do not have an applicable name, a formatted
-        /// representation of the UTC offset may be returned, such as `-04:00`.
-        id: string,
-    }
 }

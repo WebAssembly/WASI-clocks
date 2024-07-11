@@ -89,10 +89,9 @@ default-monotonic-clock: monotonic-clock
 
 ```rust
     let instant: Instant = system_clock::now();
-
-    let timezone_display: TimezoneDisplay = timezone::display(instant);
-
-    println!("the timezone is {}", timezone_display.id);
+    let id = timezone::id();
+    let offset_h = timezone::utc_offset(instant) as f64 / 3600e9;
+    println!("the timezone is {} at UTC{:+}", id, offset_h);
 ```
 
 ### Detailed design discussion
