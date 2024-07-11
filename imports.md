@@ -4,7 +4,7 @@
 <ul>
 <li>interface <a href="#wasi_io_poll_0_2_0"><code>wasi:io/poll@0.2.0</code></a></li>
 <li>interface <a href="#wasi_clocks_monotonic_clock_0_2_0"><code>wasi:clocks/monotonic-clock@0.2.0</code></a></li>
-<li>interface <a href="#wasi_clocks_wall_clock_0_2_0"><code>wasi:clocks/wall-clock@0.2.0</code></a></li>
+<li>interface <a href="#wasi_clocks_system_clock_0_2_0"><code>wasi:clocks/system-clock@0.2.0</code></a></li>
 <li>interface <a href="#wasi_clocks_timezone_0_2_0"><code>wasi:clocks/timezone@0.2.0</code></a></li>
 </ul>
 </li>
@@ -71,9 +71,9 @@ successive reads of the clock will produce non-decreasing values.</p>
 <h4><a name="pollable"></a><code>type pollable</code></h4>
 <p><a href="#pollable"><a href="#pollable"><code>pollable</code></a></a></p>
 <p>
-#### <a name="instant"></a>`type instant`
+#### <a name="monotonic_clock_point"></a>`type monotonic-clock-point`
 `u64`
-<p>An instant in time, in nanoseconds. An instant is relative to an
+<p>A monotonic clock point in nanoseconds. A clock point is relative to an
 unspecified initial value, and can only be compared to instances from
 the same monotonic-clock.
 <h4><a name="duration"></a><code>type duration</code></h4>
@@ -87,7 +87,7 @@ the same monotonic-clock.
 produce a sequence of non-decreasing values.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="now.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
+<li><a name="now.0"></a> <a href="#monotonic_clock_point"><a href="#monotonic_clock_point"><code>monotonic-clock-point</code></a></a></li>
 </ul>
 <h4><a name="resolution"></a><code>resolution: func</code></h4>
 <p>Query the resolution of the clock. Returns the duration of time
@@ -96,16 +96,16 @@ corresponding to a clock tick.</p>
 <ul>
 <li><a name="resolution.0"></a> <a href="#duration"><a href="#duration"><code>duration</code></a></a></li>
 </ul>
-<h4><a name="subscribe_instant"></a><code>subscribe-instant: func</code></h4>
-<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the specified instant
+<h4><a name="subscribe_clock_point"></a><code>subscribe-clock-point: func</code></h4>
+<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the specified clock point
 has occured.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="subscribe_instant.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
+<li><a name="subscribe_clock_point.when"></a><code>when</code>: <a href="#monotonic_clock_point"><a href="#monotonic_clock_point"><code>monotonic-clock-point</code></a></a></li>
 </ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="subscribe_instant.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
+<li><a name="subscribe_clock_point.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
 </ul>
 <h4><a name="subscribe_duration"></a><code>subscribe-duration: func</code></h4>
 <p>Create a <a href="#pollable"><code>pollable</code></a> that will resolve after the specified duration has
@@ -118,25 +118,25 @@ elapsed from the time this function is invoked.</p>
 <ul>
 <li><a name="subscribe_duration.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi_clocks_wall_clock_0_2_0"></a>Import interface wasi:clocks/wall-clock@0.2.0</h2>
-<p>WASI Wall Clock is a clock API intended to let users query the current
-time. The name &quot;wall&quot; makes an analogy to a &quot;clock on the wall&quot;, which
-is not necessarily monotonic as it may be reset.</p>
+<h2><a name="wasi_clocks_system_clock_0_2_0"></a>Import interface wasi:clocks/system-clock@0.2.0</h2>
+<p>WASI System Clock is a clock API intended to let users query the current
+time. The clock is not necessarily monotonic as it may be reset.</p>
 <p>It is intended to be portable at least between Unix-family platforms and
 Windows.</p>
-<p>A wall clock is a clock which measures the date and time according to
-some external reference.</p>
+<p>An &quot;instant&quot;, or &quot;exact time&quot;, is a point in time without regard to any time
+zone: just the time since a particular external reference point, often
+called an &quot;epoch&quot;.</p>
 <p>External references may be reset, so this clock is not necessarily
 monotonic, making it unsuitable for measuring elapsed time.</p>
 <p>It is intended for reporting the current date and time for humans.</p>
 <hr />
 <h3>Types</h3>
-<h4><a name="datetime"></a><code>record datetime</code></h4>
-<p>A time and date in seconds plus nanoseconds.</p>
+<h4><a name="instant"></a><code>record instant</code></h4>
+<p>An exact time in seconds plus nanoseconds.</p>
 <h5>Record Fields</h5>
 <ul>
-<li><a name="datetime.seconds"></a><code>seconds</code>: <code>u64</code></li>
-<li><a name="datetime.nanoseconds"></a><code>nanoseconds</code>: <code>u32</code></li>
+<li><a name="instant.seconds"></a><code>seconds</code>: <code>u64</code></li>
+<li><a name="instant.nanoseconds"></a><code>nanoseconds</code>: <code>u32</code></li>
 </ul>
 <hr />
 <h3>Functions</h3>
@@ -150,77 +150,51 @@ also known as <a href="https://en.wikipedia.org/wiki/Unix_time">Unix Time</a>.</
 <p>The nanoseconds field of the output is always less than 1000000000.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="now.0"></a> <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="now.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h4><a name="resolution"></a><code>resolution: func</code></h4>
 <p>Query the resolution of the clock.</p>
 <p>The nanoseconds field of the output is always less than 1000000000.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="resolution.0"></a> <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="resolution.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h2><a name="wasi_clocks_timezone_0_2_0"></a>Import interface wasi:clocks/timezone@0.2.0</h2>
 <hr />
 <h3>Types</h3>
-<h4><a name="datetime"></a><code>type datetime</code></h4>
-<p><a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></p>
+<h4><a name="instant"></a><code>type instant</code></h4>
+<p><a href="#instant"><a href="#instant"><code>instant</code></a></a></p>
 <p>
-#### <a name="timezone_display"></a>`record timezone-display`
-<p>Information useful for displaying the timezone of a specific <a href="#datetime"><code>datetime</code></a>.</p>
-<p>This information may vary within a single <code>timezone</code> to reflect daylight
-saving time adjustments.</p>
-<h5>Record Fields</h5>
-<ul>
-<li>
-<p><a name="timezone_display.utc_offset"></a><a href="#utc_offset"><code>utc-offset</code></a>: <code>s32</code></p>
-<p>The number of seconds difference between UTC time and the local
-time of the timezone.
-<p>The returned value will always be less than 86400 which is the
-number of seconds in a day (24<em>60</em>60).</p>
-<p>In implementations that do not expose an actual time zone, this
-should return 0.</p>
-</li>
-<li>
-<p><a name="timezone_display.name"></a><code>name</code>: <code>string</code></p>
-<p>The abbreviated name of the timezone to display to a user. The name
-`UTC` indicates Coordinated Universal Time. Otherwise, this should
-reference local standards for the name of the time zone.
+----
+<h3>Functions</h3>
+<h4><a name="id"></a><code>id: func</code></h4>
+<p>Return the IANA identifier of the currently configured timezone. The id
+<code>UTC</code> indicates Coordinated Universal Time. Otherwise, this should be an
+identifier from the IANA Time Zone Database.</p>
+<p>For displaying to a user, the identifier should be converted into a
+localized name by means of an internationalization API.</p>
 <p>In implementations that do not expose an actual time zone, this
 should be the string <code>UTC</code>.</p>
 <p>In time zones that do not have an applicable name, a formatted
 representation of the UTC offset may be returned, such as <code>-04:00</code>.</p>
-</li>
-<li>
-<p><a name="timezone_display.in_daylight_saving_time"></a><code>in-daylight-saving-time</code>: <code>bool</code></p>
-<p>Whether daylight saving time is active.
-<p>In implementations that do not expose an actual time zone, this
-should return false.</p>
-</li>
-</ul>
-<hr />
-<h3>Functions</h3>
-<h4><a name="display"></a><code>display: func</code></h4>
-<p>Return information needed to display the given <a href="#datetime"><code>datetime</code></a>. This includes
-the UTC offset, the time zone name, and a flag indicating whether
-daylight saving time is active.</p>
-<p>If the timezone cannot be determined for the given <a href="#datetime"><code>datetime</code></a>, return a
-<a href="#timezone_display"><code>timezone-display</code></a> for <code>UTC</code> with a <a href="#utc_offset"><code>utc-offset</code></a> of 0 and no daylight
-saving time.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="display.when"></a><code>when</code>: <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
-</ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="display.0"></a> <a href="#timezone_display"><a href="#timezone_display"><code>timezone-display</code></a></a></li>
+<li><a name="id.0"></a> <code>string</code></li>
 </ul>
 <h4><a name="utc_offset"></a><code>utc-offset: func</code></h4>
-<p>The same as <a href="#display"><code>display</code></a>, but only return the UTC offset.</p>
+<p>The number of nanoseconds difference between UTC time and the local
+time of the currently configured timezone at the exact time of
+<a href="#instant"><code>instant</code></a>.</p>
+<p>The magnitude of the returned value will always be less than
+86,400,000,000,000 which is the number of nanoseconds in a day
+(24<em>60</em>60*1e9).</p>
+<p>In implementations that do not expose an actual time zone, this
+should return 0.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="utc_offset.when"></a><code>when</code>: <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
+<li><a name="utc_offset.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
 </ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="utc_offset.0"></a> <code>s32</code></li>
+<li><a name="utc_offset.0"></a> <code>s64</code></li>
 </ul>
